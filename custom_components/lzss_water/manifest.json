@@ -5,8 +5,7 @@
   "dependencies": [],
   "codeowners": ["@caiwx86"],
   "requirements": ["aiohttp>=3.8.0", "beautifulsoup4>=4.9.3"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config_flow": true,
-  "iot_class": "cloud_polling",
-  "icon": "mdi:water"
+  "iot_class": "cloud_polling"
 } 
