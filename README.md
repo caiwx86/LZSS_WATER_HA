@@ -1,11 +1,10 @@
 # 水费查询集成 (Water Bill Integration) - 兴泸水务
 
-这是一个用于 Home Assistant 的水费查询集成，可以自动获取水费余额、消费和未缴费信息。
+这是一个用于 Home Assistant 的水费查询集成，可以自动获取水费余额和未缴费信息。
 
 ## 功能特点
 
 - 自动获取水费余额
-- 显示上月水费消费
 - 显示未缴费笔数
 - 显示未缴费金额
 - 支持自定义更新间隔
@@ -52,19 +51,13 @@ lzss_water:
    - 图标：水滴
    - 属性：账户号码、当前月份、最后更新时间
 
-2. `sensor.lzss_water_consumption` - 上月水费消费
-   - 显示上月消费金额
-   - 单位：元
-   - 图标：带百分比的水滴
-   - 属性：账户号码、上月月份、最后更新时间
-
-3. `sensor.lzss_water_unpaid_count` - 未缴费笔数
+2. `sensor.lzss_water_unpaid_count` - 未缴费笔数
    - 显示未缴费的笔数
    - 单位：笔
    - 图标：警告圆圈
    - 属性：账户号码、当前月份、最后更新时间
 
-4. `sensor.lzss_water_unpaid_amount` - 未缴费金额
+3. `sensor.lzss_water_unpaid_amount` - 未缴费金额
    - 显示未缴费的总金额
    - 单位：元
    - 图标：空心警告圆圈

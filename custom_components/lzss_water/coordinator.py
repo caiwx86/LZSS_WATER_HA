@@ -40,13 +40,6 @@ class WaterBillDataUpdateCoordinator(DataUpdateCoordinator):
         """返回账号。"""
         return self._account_number
 
-    def _get_last_month(self) -> tuple[int, int]:
-        """获取上个月的年份和月份。"""
-        today = datetime.now()
-        if today.month == 1:
-            return today.year - 1, 12
-        return today.year, today.month - 1
-
     async def _get_form_values(self) -> Dict[str, str]:
         """获取表单验证值。"""
         try:
@@ -71,14 +64,15 @@ class WaterBillDataUpdateCoordinator(DataUpdateCoordinator):
             _LOGGER.error("获取表单验证值失败: %s", str(err))
             raise UpdateFailed(f"获取表单验证值失败: {err}")
 
-    async def _fetch_data(self, year: int, month: int) -> Dict[str, Any]:
-        """获取指定月份的数据。"""
+    async def _fetch_data(self) -> Dict[str, Any]:
+        """获取水费数据。"""
         form_values = await self._get_form_values()
+        current_date = datetime.now()
         
         data = {
             **form_values,
-            "startMonth": f"{year}/{month}",
-            "endMonth": f"{year}/{month}",
+            "startMonth": f"{current_date.year}/{current_date.month}",
+            "endMonth": f"{current_date.year}/{current_date.month}",
             "userCode": self._account_number,
             "userName": "",
             "vaCode": "",
@@ -115,20 +109,13 @@ class WaterBillDataUpdateCoordinator(DataUpdateCoordinator):
         try:
             async with async_timeout.timeout(10):
                 current_date = datetime.now()
-                last_year, last_month = self._get_last_month()
-
-                # 获取本月数据
-                current_data = await self._fetch_data(current_date.year, current_date.month)
-                # 获取上月数据
-                last_month_data = await self._fetch_data(last_year, last_month)
+                data = await self._fetch_data()
 
                 return {
-                    "current_balance": current_data["balance"],
+                    "current_balance": data["balance"],
                     "current_month": f"{current_date.year}/{current_date.month}",
-                    "last_month_consumption": last_month_data["balance"],
-                    "last_month": f"{last_year}/{last_month}",
-                    "unpaid_count": current_data["unpaid_count"],
-                    "unpaid_amount": current_data["unpaid_amount"]
+                    "unpaid_count": data["unpaid_count"],
+                    "unpaid_amount": data["unpaid_amount"]
                 }
 
         except Exception as err:

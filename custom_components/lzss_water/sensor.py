@@ -20,7 +20,6 @@ async def async_setup_entry(
     coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities([
         WaterBillBalanceSensor(coordinator),
-        WaterBillConsumptionSensor(coordinator),
         WaterBillUnpaidCountSensor(coordinator),
         WaterBillUnpaidAmountSensor(coordinator)
     ])
@@ -47,31 +46,6 @@ class WaterBillBalanceSensor(CoordinatorEntity, SensorEntity):
         return {
             "account_number": self.coordinator.account_number,
             "month": self.coordinator.data.get("current_month", ""),
-            "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-
-class WaterBillConsumptionSensor(CoordinatorEntity, SensorEntity):
-    """上月水费消费传感器。"""
-
-    def __init__(self, coordinator: WaterBillDataUpdateCoordinator) -> None:
-        """初始化传感器。"""
-        super().__init__(coordinator)
-        self._attr_name = "上月水费消费"
-        self._attr_unique_id = f"{coordinator.account_number}_consumption"
-        self._attr_native_unit_of_measurement = "元"
-        self._attr_icon = "mdi:water-percent"
-
-    @property
-    def native_value(self) -> float:
-        """返回消费金额。"""
-        return self.coordinator.data.get("last_month_consumption", 0.0)
-
-    @property
-    def extra_state_attributes(self) -> dict:
-        """返回额外状态属性。"""
-        return {
-            "account_number": self.coordinator.account_number,
-            "month": self.coordinator.data.get("last_month", ""),
             "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
