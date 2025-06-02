@@ -40,15 +40,39 @@ class WaterBillDataUpdateCoordinator(DataUpdateCoordinator):
         """返回账号。"""
         return self._account_number
 
+    async def _get_form_values(self) -> Dict[str, str]:
+        """获取表单验证值。"""
+        try:
+            async with self._session.get(API_BASE_URL) as response:
+                response.raise_for_status()
+                html = await response.text()
+
+            soup = BeautifulSoup(html, 'html.parser')
+            viewstate = soup.find('input', {'id': '__VIEWSTATE'})
+            viewstategenerator = soup.find('input', {'id': '__VIEWSTATEGENERATOR'})
+            eventvalidation = soup.find('input', {'id': '__EVENTVALIDATION'})
+
+            if not all([viewstate, viewstategenerator, eventvalidation]):
+                raise UpdateFailed("无法获取表单验证值")
+
+            return {
+                "__VIEWSTATE": viewstate.get('value', ''),
+                "__VIEWSTATEGENERATOR": viewstategenerator.get('value', ''),
+                "__EVENTVALIDATION": eventvalidation.get('value', '')
+            }
+        except Exception as err:
+            _LOGGER.error("获取表单验证值失败: %s", str(err))
+            raise UpdateFailed(f"获取表单验证值失败: {err}")
+
     async def _async_update_data(self) -> Dict[str, Any]:
         """从水费网站获取数据。"""
         try:
             async with async_timeout.timeout(10):
                 current_date = datetime.now()
+                form_values = await self._get_form_values()
+                
                 data = {
-                    "__VIEWSTATE": "/wEPDwUJMTMwNTkwMjI4ZGRzSpW4QQXIKjbNWAPa1WXtaK/mwTcYmTjvG8fbktlMgQ==",
-                    "__VIEWSTATEGENERATOR": "51114EE5",
-                    "__EVENTVALIDATION": "/wEdAAWVO/3fmRx9gZB/eBewQB4qEZwElK9JgTzgWgAz/ShB8JIQMpM+ZLBNEKe/ZRcwNE5BgGO2cbZoYVVlrl5IIMvpoJf8A5tkF8NhvUx0nVlv69wrY/UMNK+Bf+CULI/mm2zt8ewA6VuleufMKQ9TL/CN",
+                    **form_values,
                     "startMonth": f"{current_date.year}/{current_date.month}",
                     "endMonth": f"{current_date.year}/{current_date.month}",
                     "userCode": self._account_number,
