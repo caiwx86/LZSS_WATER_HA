@@ -2,7 +2,7 @@
 from datetime import timedelta
 
 DOMAIN = "lzss_water"
-DEFAULT_SCAN_INTERVAL = timedelta(hours=1)
+DEFAULT_SCAN_INTERVAL = timedelta(hours=8)
 CONF_ACCOUNT_NUMBER = "account_number"
 API_BASE_URL = "https://wt.lzss.com/fee/waterfee.aspx"
 
