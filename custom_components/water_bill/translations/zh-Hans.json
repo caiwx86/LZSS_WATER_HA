@@ -1,0 +1,16 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "水费查询配置",
+                "description": "请输入您的户号",
+                "data": {
+                    "account_number": "户号"
+                }
+            }
+        },
+        "abort": {
+            "already_configured": "该户号已经配置"
+        }
+    }
+} 
