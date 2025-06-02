@@ -15,17 +15,17 @@
 2. 在 HACS 中点击 "集成"
 3. 点击右上角的三个点
 4. 选择 "自定义仓库"
-5. 在 "仓库" 字段中输入：`https://github.com/caiwx86/LZSS_WATER_HA`
+5. 在 "仓库" 字段中输入：`https://github.com/caiwx86/lzss_water_ha`
 6. 在 "类别" 下拉菜单中选择 "集成"
 7. 点击 "添加"
-8. 在 HACS 中搜索 "Water Bill"
+8. 在 HACS 中搜索 "兴泸水务"
 9. 点击安装
 10. 重启 Home Assistant
 
 ### 手动安装
 
-1. 下载最新的 [release](https://github.com/caiwx86/LZSS_WATER_HA/releases)
-2. 将 `water_bill` 文件夹复制到你的 `custom_components` 目录
+1. 下载最新的 [release](https://github.com/caiwx86/lzss_water_ha/releases)
+2. 将 `lzss_water` 文件夹复制到你的 `custom_components` 目录
 3. 重启 Home Assistant
 
 ## 配置
@@ -33,14 +33,14 @@
 在 `configuration.yaml` 中添加以下配置：
 
 ```yaml
-water_bill:
+lzss_water:
   account_number: "你的户号"
   scan_interval: 3600  # 可选，默认每小时更新一次
 ```
 
 ## 支持的传感器
 
-- `sensor.water_bill_balance` - 当前水费余额
+- `sensor.lzss_water_balance` - 当前水费余额
 
 ## 故障排除
 

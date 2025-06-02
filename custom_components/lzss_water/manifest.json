@@ -1,7 +1,7 @@
 {
-  "domain": "lzs_water",
+  "domain": "lzss_water",
   "name": "兴泸水务",
-  "documentation": "https://github.com/caiwx86/LZSS_WATER_HA",
+  "documentation": "https://github.com/caiwx86/lzss_water_ha",
   "dependencies": [],
   "codeowners": ["@caiwx86"],
   "requirements": ["aiohttp>=3.8.0", "beautifulsoup4>=4.9.3"],
